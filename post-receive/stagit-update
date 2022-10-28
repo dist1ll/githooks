@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+# Copyright 2022 Adrian Alic <contact@alic.dev>
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+if [ $# -eq 0 ]; then
+    echo "Usage: stagit-update <path/to/htmlroot>"
+    echo "Note:  Make sure you're in a git repo of your root repo directory."
+    echo "       This script assumes a single root repo folder without nested repos."
+    exit 1
+fi
+
+htmlroot=$(echo $1 | sed 's:/*$::')
+leaf=$(printf '%s\n' "${PWD##*/}")
+REPO=$(pwd)
+REPOROOT=$(dirname "$REPO")
+# create repo directory in stagit root, if it doesn't exist
+mkdir -p $htmlroot/$leaf
+# clear repo directory
+rm -rf $htmlroot/$leaf/*
+# create stagit for current directory
+pushd $htmlroot/$leaf > /dev/null
+stagit $REPO
+popd > /dev/null
+# get list of all repositories
+ALL_REPOS=$(cd $REPOROOT; find "$(pwd -P)" -mindepth 1 -maxdepth 1 -type d)
+# create index, using the repo root (assumed to be parent of pwd)
+(cd $htmlroot; stagit-index $ALL_REPOS > index.html)
+echo "done"
