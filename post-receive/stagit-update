@@ -14,14 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-if [ $# -eq 0 ]; then
-    echo "Usage: stagit-update <path/to/htmlroot>"
-    echo "Note:  Make sure you're in a git repo of your root repo directory."
-    echo "       This script assumes a single root repo folder without nested repos."
-    exit 1
-fi
 
-htmlroot=$(echo $1 | sed 's:/*$::')
+
+# ATTENTION: This needs to be set by you
+htmlroot="/root/html"
+
+
+# +---------------------+
+# | Flat Repo Hierarchy |
+# +---------------------+
 leaf=$(printf '%s\n' "${PWD##*/}")
 REPO=$(pwd)
 REPOROOT=$(dirname "$REPO")
