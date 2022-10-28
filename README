@@ -1,0 +1,11 @@
+This repository contains a collection of useful git hooks for normal and bare 
+git repositories.
+
++-----------------------------------------------------------------------------+
+|     NAME      |      TYPE    |                  DESCRIPTION                 |
++-----------------------------------------------------------------------------+
+| zerotime      | post-commit  | Censors the timestamp from the commit date,  |
+|               |              | so that commits are always authored at 0:0:0 |
+| stagit-update | post-receive | Rebuilds the stagit html repo and index file |
+|               |              | Note: html root is hardcoded, needs change   |
++-----------------------------------------------------------------------------+
