@@ -23,8 +23,13 @@ git config advice.ignoredHook false
 # Disable post commit hook
 chmod -x .git/hooks/post-commit 
 
+# Set git committer date as well
+export GIT_COMMITTER_DATE=$(date --iso-8601=seconds | sed 's/T.*+/T00:00:00+/g')
+
 # Replace the commit date with the zeroed time
 git commit --no-verify --amend --date="$DATE" --no-edit > /dev/null
+
+unset GIT_COMMITTER_DATE
 
 # Enable post-commit hook
 chmod +x .git/hooks/post-commit
